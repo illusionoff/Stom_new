@@ -1,5 +1,5 @@
-import {sequelize} from '../utils/db.js'
-import { DataTypes } from'sequelize'
+import { sequelize } from '../utils/db.js'
+import { DataTypes } from 'sequelize'
 
 
 const User = sequelize.define('user', {
@@ -15,16 +15,16 @@ const User = sequelize.define('user', {
     role: {
         type: DataTypes.STRING, defaultValue: "USER"
     },
-    firstName:{
+    firstName: {
         type: DataTypes.STRING, defaultValue: "-"
     },
-    lastName:{
+    lastName: {
         type: DataTypes.STRING, defaultValue: "-"
     },
-    isActivated:{
+    isActivated: {
         type: DataTypes.BOOLEAN, defaultValue: false
     },
-    activationLink:{
+    activationLink: {
         type: DataTypes.STRING
     }
 })
@@ -38,6 +38,35 @@ const Basket = sequelize.define('basket', {
 
 User.hasOne(Basket)
 Basket.belongsTo(User)
+
+// https://app.diagrams.net/#Hillusionoff%2FStom_new%2Fmain%2Fserver%2Fmodels%2FUntitled%20Diagram.drawio
+// Course
+// interface ICoursesData {
+//  image: string;
+//  name: string;
+//  time: number; // это продолжительность курса в минутах тогда почему стринг? или это для отображени, а мне на бэке number?
+//  lectionsCounter: number;
+//  price: string;
+
+// course_info
+// section: string;
+// ////////////////////////////////////////program: String;
+// program: [
+// {
+//  name: string;
+//  lectorName: string;
+//  lectorAvatar: string;
+//  time: number;
+//  price: number;
+//  content: [string];
+//  lectionsCounter: number;
+// }];
+// lectors: [string];
+// questions: [{name: [string], answer:[string]}]
+
+// startTime: Data;
+// category: string
+// }
 
 export const models = {
     User, Basket,
