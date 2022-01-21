@@ -29,6 +29,29 @@ const User = sequelize.define('user', {
     }
 })
 
+// реализую modek course 
+
+const Course = sequelize.define('course', {
+    id: {
+        type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true
+    },
+    image: {
+        type: DataTypes.STRING, allowNull: false
+    },
+    name: {
+        type: DataTypes.STRING, unique: true, allowNull: false
+    },
+    time: {
+        type: DataTypes.INTEGER, allowNull: false
+    },
+    lectionsCounter: {
+        type: DataTypes.INTEGER, allowNull: false, defaultValue: 1
+    },
+    price: {
+        type: DataTypes.INTEGER, allowNull: false
+    },
+})
+
 const Basket = sequelize.define('basket', {
     id: {
         type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true
@@ -36,8 +59,9 @@ const Basket = sequelize.define('basket', {
 })
 
 
-User.hasOne(Basket)
-Basket.belongsTo(User)
+User.hasOne(Basket);
+Basket.belongsTo(User);
+
 
 // https://app.diagrams.net/#Hillusionoff%2FStom_new%2Fmain%2Fserver%2Fmodels%2FUntitled%20Diagram.drawio
 // Course
@@ -53,6 +77,7 @@ Basket.belongsTo(User)
 // ////////////////////////////////////////program: String;
 // program: [
 // {
+// id:
 //  name: string;
 //  lectorName: string;
 //  lectorAvatar: string;
@@ -68,7 +93,9 @@ Basket.belongsTo(User)
 // category: string
 // }
 
+
+
 export const models = {
-    User, Basket,
+    User, Course, Basket,
 }
 
