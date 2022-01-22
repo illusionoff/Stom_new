@@ -1,24 +1,24 @@
-import {ApiError} from "../error/ApiError.js";
+import { ApiError } from "../error/ApiError.js";
 import bcrypt from "bcrypt"
-import {models} from "../models/models.js"
+import { models } from "../models/models.js"
 import jwt from 'jsonwebtoken'
-import {mail} from '../service/mail-servise.js'
-import {v4 as uuidv4} from 'uuid'
-import {validationResult} from "express-validator";
+import { mail } from '../service/mail-servise.js'
+import { v4 as uuidv4 } from 'uuid'
+import { validationResult } from "express-validator";
 
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
-        {id, email, role},
+        { id, email, role },
         process.env.SECRET_KEY,
-        {expiresIn: '24h'}                                    //время жизни токена
+        { expiresIn: '24h' }                                    //время жизни токена
     )
 }
 
 class UserController {
     async registration(req, res, next) {
         try {
-            const {email, password, role, firstName, lastName} = req.body
+            const { email, password, role, firstName, lastName } = req.body
 
 
             const errors = validationResult(req)
@@ -29,7 +29,7 @@ class UserController {
 
             if (!firstName || !lastName) return next(ApiError.badRequest('Некорректный firstName или lastName'))
 
-            const candidate = await models.User.findOne({where: {email}})
+            const candidate = await models.User.findOne({ where: { email } })
             if (candidate) {
                 return next(ApiError.badRequest('Пользователь с таким email уже существует'))
             }
@@ -47,14 +47,14 @@ class UserController {
                 activationLink
             })
 
-            await models.Basket.create({userId: user.id})
+            await models.Basket.create({ userId: user.id })
 
             const token = generateJwt(user.id, user.email, user.role)
 
 
             await mail.sendMailAction(email, `${process.env.API_URL}/api/user/activate/${activationLink}`)
 
-            return res.json({token, email: user.email, firstName: user.firstName, lastName: user.lastName})
+            return res.json({ token, email: user.email, firstName: user.firstName, lastName: user.lastName })
 
         } catch (err) {
             console.log('🚀-error: ', err)
@@ -64,8 +64,8 @@ class UserController {
 
     async login(req, res, next) {
         try {
-            const {email, password} = req.body
-            const user = await models.User.findOne({where: {email}})
+            const { email, password } = req.body
+            const user = await models.User.findOne({ where: { email } })
             if (!user) {
                 return next(ApiError.internal('Пользователь не найден'))
             }
@@ -77,7 +77,7 @@ class UserController {
 
             const token = generateJwt(user.id, user.email, user.role)
 
-            return res.json({token, email: user.email, firstName: user.firstName, lastName: user.lastName})
+            return res.json({ token, email: user.email, firstName: user.firstName, lastName: user.lastName })
 
         } catch (err) {
             console.log('🚀🚀-error: ', err)
@@ -87,10 +87,10 @@ class UserController {
     async check(req, res, next) {
         try {
             const email = req.user.email
-            const user = await models.User.findOne({where: {email}})
+            const user = await models.User.findOne({ where: { email } })
 
             const token = generateJwt(req.user.id, req.user.email, req.user.role)
-            return res.json({token, email: user.email, firstName: user.firstName, lastName: user.lastName})
+            return res.json({ token, email: user.email, firstName: user.firstName, lastName: user.lastName })
         } catch (err) {
             console.log('🚀🚀🚀-error: ', err)
         }
@@ -99,7 +99,7 @@ class UserController {
     async activate(req, res, next) {
         try {
             const activationLink = req.params.link
-            const user = await models.User.findOne({activationLink})
+            const user = await models.User.findOne({ activationLink })
             console.log('user', user)
             if (!user) {
                 throw new Error('Неккоректная ссылка активации')

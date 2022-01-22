@@ -2,11 +2,11 @@ import dotenv from 'dotenv';
 import express from 'express';
 import chalk from 'chalk';
 import cors from 'cors';
-import {sequelize} from './utils/db.js'
+import { sequelize } from './utils/db.js'
 import router from './routes/index.js';
-import {models} from './models/models.js'
-import errorHandler from './middleware/ErrorHandlingMiddleware.js'
-import fileUpload from 'express-fileupload'
+import { models } from './models/models.js';
+import errorHandler from './middleware/ErrorHandlingMiddleware.js';
+import fileUpload from 'express-fileupload';
 
 dotenv.config()
 
@@ -30,7 +30,7 @@ const start = async () => {
         await sequelize.sync()
         app.listen(PORT, () => console.log(chalk.cyan(`::::::::...The server is running on the port: ${PORT}...::::::::`)))
 
-    }catch (err){
+    } catch (err) {
         console.log('error start: ', err);
     }
 };
