@@ -4,11 +4,20 @@ import { courseController } from "../controllers/courseController.js"
 import authMiddleware from "../middleware/authMiddleware.js"
 import { body } from "express-validator"
 
-// router.post('/add',// addCourseRouter
-//   body('email').isEmail(),
-//   body('password').isLength({ min: 3, max: 32 }),
-//   courseController.addCourse
-//   )
+router.post('/addCourse',// addCourseRouter
+  body('image').isLength({ min: 3, max: 50 }),
+  body('name').isLength({ min: 5, max: 200 }),
+  body('time')
+    .isNumeric()
+    .isLength({ min: 1 }),
+  body('lectionsCounter')
+    .isNumeric()
+    .isLength({ min: 1 }),
+  body('price')
+    .isNumeric()
+    .isLength({ min: 1 }),
+  courseController.addCourse
+)
 
 router.get('/getCourses',
   // body('image').isLength({ min: 3, max: 50 }),

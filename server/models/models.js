@@ -29,7 +29,7 @@ const User = sequelize.define('user', {
     }
 })
 
-// реализую modek course 
+// реализую model course 
 
 const Course = sequelize.define('course', {
     id: {

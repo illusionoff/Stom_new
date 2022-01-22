@@ -19,11 +19,13 @@ import { validationResult } from "express-validator";
 class CourseController {
   async addCourse(req, res, next) {
     try {
-      const email = req.user.email
-      const user = await models.User.findOne({ where: { email } })
+      // const email = req.user.email
+      // const user = await models.User.findOne({ where: { email } })
 
-      const token = generateJwt(req.user.id, req.user.email, req.user.role)
-      return res.json({ token, email: user.email, firstName: user.firstName, lastName: user.lastName })
+      // const token = generateJwt(req.user.id, req.user.email, req.user.role)
+      // return res.json({ token, email: user.email, firstName: user.firstName, lastName: user.lastName })
+      const { image, name, time, lectionsCounter, price } = req.body;
+      res.json({ image, name, time, lectionsCounter, price });
     } catch (err) {
       console.log('🚀🚀🚀-error: ', err)
     }
