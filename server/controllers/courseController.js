@@ -59,16 +59,18 @@ class CourseController {
     }
   }
 
-  async getCourses(req, res, next) {
+  async getAllCourses(req, res, next) {
     try {
+      let courses;
+      courses = await models.Course.findAll();
       // const email = req.user.email
       // const user = await models.User.findOne({ where: { email } })
 
-      // const token = generateJwt(req.user.id, req.user.email, req.user.role)
-      // return res.json({ token, email: user.email, firstName: user.firstName, lastName: user.lastName })
-      res.json({ message: 'Test working getCourses' });
+      // res.json({ message: 'Test working getCourses' });
+      res.json(courses);
     } catch (err) {
-      console.log('🚀🚀🚀-error: ', err)
+      console.log('🚀🚀🚀-error: ', err);
+      next(ApiError.badRequest(err.message));
     }
   }
 

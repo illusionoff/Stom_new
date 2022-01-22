@@ -26,20 +26,7 @@ router.post('/addCourse',// addCourseRouter
   courseController.addCourse
 )
 
-router.get('/getCourses',
-  // body('image').isLength({ min: 3, max: 50 }),
-  // body('name').isLength({ min: 5, max: 200 }),
-  // body('time')
-  //   .isNumeric()
-  //   .isLength({ min: 1, }),
-  // body('lectionsCounter').isLength({ min: 1 }),
-  // body('price')
-  //   .isNumeric()
-  //   .withMessage("Введите корректный номер категории")
-  //   .isLength({ min: 1 }),
-  courseController.getCourses
-
-) //getAllCourses
+router.get('/getAllCourses', courseController.getAllCourses) //getAllCourses
 // router.post('/:id',)// getOneCourse
 
 // router.post('/login',
