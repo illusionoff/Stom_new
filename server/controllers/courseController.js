@@ -1,7 +1,5 @@
 import { ApiError } from "../error/ApiError.js";
 import { models } from "../models/models.js"
-import jwt from 'jsonwebtoken'
-import { mail } from '../service/mail-servise.js'
 import { v4 as uuidv4 } from 'uuid'
 import { validationResult } from "express-validator";
 import path from 'path';
@@ -10,24 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-
-
-// const generateJwt = (id, email, role) => {
-//     return jwt.sign(
-//         {id, email, role},
-//         process.env.SECRET_KEY,
-//         {expiresIn: '24h'}                                    //время жизни токена
-//     )
-// }
-
 class CourseController {
   async addCourse(req, res, next) {
     try {
       const { name, time, lectionsCounter, price } = req.body;
       const { image } = req.files;
-      const fileName = uuidv4() + '.jpg';
-      console.log('__dirname=', __dirname);
-      image.mv(path.resolve(__dirname, '..', 'static', fileName));
 
       if (!image) return next(ApiError.badRequest('Некорректный image'));
       if (!name) return next(ApiError.badRequest('Некорректный name'));
@@ -39,6 +24,9 @@ class CourseController {
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest(errors.array()[0].msg))
       }
+      const fileName = uuidv4() + '.jpg';
+      console.log('__dirname=', __dirname);
+      image.mv(path.resolve(__dirname, '..', 'static', fileName));
       // const id = uuidv4();
       const course = await models.Course.create({
         // id,
@@ -63,10 +51,6 @@ class CourseController {
     try {
       let courses;
       courses = await models.Course.findAll();
-      // const email = req.user.email
-      // const user = await models.User.findOne({ where: { email } })
-
-      // res.json({ message: 'Test working getCourses' });
       res.json(courses);
     } catch (err) {
       console.log('🚀🚀🚀-error: ', err);
@@ -74,6 +58,16 @@ class CourseController {
     }
   }
 
+  async getOneCourse(req, res, next) {
+    try {
+      const { id } = req.params;
+      const course = await models.Course.findOne({ where: { id } });
+      res.json(course);
+    } catch (err) {
+      console.log('🚀🚀🚀-error: ', err);
+      next(ApiError.badRequest(err.message));
+    }
+  }
 }
 
 export const courseController = new CourseController()
